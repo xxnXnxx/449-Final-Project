@@ -1,7 +1,7 @@
 # Cloud Service Access Management System
 
 ## Authors
-**Ian Gabriel Vista, , & ?**
+**Ian Gabriel Vista, Peter Wongprasert, & ?**
 
 ## Project Overview
 
@@ -18,3 +18,6 @@ This system enforces limits based on the subscription plan, restricting access t
 - **Usage Tracking and Limit Enforcement**: Tracks API usage for each user and temporarily restricts access if the usage limit is reached.
 
 
+## Dependencies
+
+fastapi, unvicorn
