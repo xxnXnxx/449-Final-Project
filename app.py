@@ -49,3 +49,28 @@ class PlanUpdate(BaseModel):
     usage_limits: Optional[Dict[str, int]]
 
 ### SQLAlchemy Models
+
+
+### API routes
+@app.put("/plans/{plan_id}")
+def update_plan(plan_id: int, plan_data: PlanUpdate, db: Session = Depends(get_db)):
+    plan = db.query(SubscriptionPlan).filter(SubscriptionPlan.id == plan_id).first()
+    if not plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+
+    if plan_data.description is not None:
+        plan.description = plan_data.description
+    if plan_data.permissions is not None:
+        plan.permissions = plan_data.permissions
+    if plan_data.usage_limits is not None:
+        plan.usage_limits = plan_data.usage_limits
+
+    db.commit()
+    db.refresh(plan)
+    return {"message": "Plan updated successfully", "plan": {
+        "id": plan.id,
+        "name": plan.name,
+        "description": plan.description,
+        "permissions": plan.permissions,
+        "usage_limits": plan.usage_limits
+    }}
