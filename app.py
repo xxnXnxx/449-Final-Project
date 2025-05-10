@@ -31,7 +31,7 @@ from typing import List, Dict, Optional
 ### ====================================================================================
 
 # Note: I am using XAMPP to run my local server, if you aren't your URL may look different
-DATABASE_URL = "mysql+pymysql://root:@localhost/cloud_access_db"
+DATABASE_URL = "mysql+pymysql://root:@localhost/cloud_service_cpsc449"
 engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 Base = declarative_base()
