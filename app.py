@@ -18,6 +18,17 @@ from typing import List, Dict, Optional
 
 ### ====================================================================================
 
+### ==== TODO ==========================================================================
+
+# JWT tokens
+# SQLAlchemy models
+# API Routes
+# Route Testing
+# Error Handling
+# README.md
+# Video Demo
+
+### ====================================================================================
 
 # Note: I am using XAMPP to run my local server, if you aren't your URL may look different
 DATABASE_URL = "mysql+pymysql://root:@localhost/cloud_access_db"
