@@ -20,4 +20,8 @@ This system enforces limits based on the subscription plan, restricting access t
 
 ## Dependencies
 
-fastapi, unvicorn
+fastapi
+uvicorn: async gateway server for fastapi
+sqlalchemy: object relational mapper for structuring code objects into database relational models. 
+    i.e. changes object data to push onto db.
+pymysql: lightweight MySQL driver for Python 
