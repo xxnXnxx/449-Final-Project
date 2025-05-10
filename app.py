@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, Text, JSON, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from typing import List, Dict, Optional
 
 ### ==== Explaination of classes in relation to one another ============================
@@ -24,6 +24,17 @@ DATABASE_URL = "mysql+pymysql://root:@localhost/cloud_access_db"
 engine = create_async_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 Base = declarative_base()
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# FastAPI App
+app = FastAPI()
 
 ### Pydantic Models (validates response)
 class User(BaseModel):
