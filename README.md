@@ -49,4 +49,4 @@ The **Cloud Service Access Management System** is a backend system designed to m
 ### Team Members
 - Ian Gabriel
 - Peter Wong
-- ...Bouyer
+- Jacob Bouyer
