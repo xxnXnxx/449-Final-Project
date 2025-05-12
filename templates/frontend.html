@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Service Access Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      margin: 5px 0;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    input, select {
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      max-width: 300px;
+    }
+    .container {
+      margin-bottom: 20px;
+    }
+    .response {
+      margin-top: 10px;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cloud Service Access Management</h1>
+
+  <!-- Section for fetching a welcome message -->
+  <div class="container">
+    <h2>Welcome Message</h2>
+    <button onclick="fetchMessage()">Get Welcome Message</button>
+    <p id="welcome-response" class="response"></p>
+  </div>
+
+  <!-- Section for creating a new plan -->
+  <div class="container">
+    <h2>Create a New Plan</h2>
+    <input type="text" id="plan-name" placeholder="Plan Name" />
+    <textarea id="plan-description" placeholder="Plan Description"></textarea>
+    <textarea id="plan-permissions" placeholder="Permissions (comma-separated)"></textarea>
+    <textarea id="plan-usage-limits" placeholder="Usage Limits (JSON format)"></textarea>
+    <button onclick="createPlan()">Create Plan</button>
+    <p id="plan-response" class="response"></p>
+  </div>
+
+  <!-- Section for fetching all plans -->
+  <div class="container">
+    <h2>View All Plans</h2>
+    <button onclick="fetchPlans()">Get All Plans</button>
+    <ul id="plans-list"></ul>
+  </div>
+
+  <script>
+    // Fetch welcome message
+    async function fetchMessage() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/");
+        const data = await response.json();
+        document.getElementById("welcome-response").textContent = data.message;
+      } catch (err) {
+        document.getElementById("welcome-response").textContent = "Error fetching data.";
+        console.error(err);
+      }
+    }
+
+    // Create a new plan
+    async function createPlan() {
+      const name = document.getElementById("plan-name").value;
+      const description = document.getElementById("plan-description").value;
+      const permissions = document.getElementById("plan-permissions").value.split(",");
+      const usageLimits = JSON.parse(document.getElementById("plan-usage-limits").value || "{}");
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/plans", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            description,
+            permissions,
+            usage_limits: usageLimits,
+          }),
+        });
+        const data = await response.json();
+        document.getElementById("plan-response").textContent = "Plan created successfully!";
+      } catch (err) {
+        document.getElementById("plan-response").textContent = "Error creating plan.";
+        console.error(err);
+      }
+    }
+
+    // Fetch all plans
+    async function fetchPlans() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/plans");
+        const data = await response.json();
+        const plansList = document.getElementById("plans-list");
+        plansList.innerHTML = "";
+        data.forEach((plan) => {
+          const li = document.createElement("li");
+          li.textContent = `${plan.name}: ${plan.description}`;
+          plansList.appendChild(li);
+        });
+      } catch (err) {
+        document.getElementById("plans-list").textContent = "Error fetching plans.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
