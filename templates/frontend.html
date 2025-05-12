@@ -58,8 +58,26 @@
     <h2>Create a New Plan</h2>
     <input type="text" id="plan-name" placeholder="Plan Name" />
     <textarea id="plan-description" placeholder="Plan Description"></textarea>
-    <textarea id="plan-permissions" placeholder="Permissions (comma-separated)"></textarea>
-    <textarea id="plan-usage-limits" placeholder="Usage Limits (JSON format)"></textarea>
+
+    <!-- Dropdown for selecting permissions -->
+    <label for="plan-permissions">Select Permissions:</label>
+    <select id="plan-permissions" multiple>
+      <option value="service1">Service 1</option>
+      <option value="service2">Service 2</option>
+      <option value="service3">Service 3</option>
+      <option value="service4">Service 4</option>
+      <option value="service5">Service 5</option>
+      <option value="service6">Service 6</option>
+    </select>
+
+    <!-- Dropdown for selecting usage limits -->
+    <label for="plan-usage-limits">Select Usage Limits:</label>
+    <select id="plan-usage-limits">
+      <option value='{"service1": 100, "service2": 200}'>Basic Plan (100 calls for Service 1, 200 for Service 2)</option>
+      <option value='{"service1": 500, "service2": 1000}'>Pro Plan (500 calls for Service 1, 1000 for Service 2)</option>
+      <option value='{"service1": 1000, "service2": 2000}'>Enterprise Plan (1000 calls for Service 1, 2000 for Service 2)</option>
+    </select>
+
     <button onclick="createPlan()">Create Plan</button>
     <p id="plan-response" class="response"></p>
   </div>
@@ -88,8 +106,14 @@
     async function createPlan() {
       const name = document.getElementById("plan-name").value;
       const description = document.getElementById("plan-description").value;
-      const permissions = document.getElementById("plan-permissions").value.split(",");
-      const usageLimits = JSON.parse(document.getElementById("plan-usage-limits").value || "{}");
+
+      // Get selected permissions
+      const permissionsSelect = document.getElementById("plan-permissions");
+      const permissions = Array.from(permissionsSelect.selectedOptions).map(option => option.value);
+
+      // Get selected usage limits
+      const usageLimitsSelect = document.getElementById("plan-usage-limits");
+      const usageLimits = JSON.parse(usageLimitsSelect.value);
 
       try {
         const response = await fetch("http://127.0.0.1:8000/plans", {

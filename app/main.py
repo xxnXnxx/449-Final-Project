@@ -36,6 +36,10 @@ def read_root():
 def create_new_plan(plan: schemas.PlanCreate, db: Session = Depends(get_db)):
     return crud.create_plan(db=db, plan=plan)
 
+@app.get("/plans")
+def get_all_plans(db: Session = Depends(get_db)):
+    return crud.get_all_plans(db=db)
+
 @app.put("/plans/{plan_id}")
 def update_plan(plan_id: int, plan: schemas.PlanCreate, db: Session = Depends(get_db)):
     return crud.modify_plan(db=db, plan_id=plan_id, plan=plan)

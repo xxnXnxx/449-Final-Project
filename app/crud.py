@@ -110,3 +110,64 @@ def check_limit(db: Session, user_id: int):
         if usage_summary.get(api_name, 0) >= limit:
             return {"message": f"Limit exceeded for {api_name}"}
     return {"message": "Usage is within limits"}
+
+def get_all_plans(db: Session):
+    return db.query(Plan).all()
+def get_all_permissions(db: Session):
+    return db.query(Permission).all()
+def get_all_subscriptions(db: Session):
+    return db.query(Subscription).all()
+def get_all_usages(db: Session):
+    return db.query(Usage).all()
+def get_plan_by_id(db: Session, plan_id: int):
+    db_plan = db.query(Plan).filter(Plan.id == plan_id).first()
+    if not db_plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+    return db_plan
+def get_permission_by_id(db: Session, permission_id: int):
+    db_permission = db.query(Permission).filter(Permission.id == permission_id).first()
+    if not db_permission:
+        raise HTTPException(status_code=404, detail="Permission not found")
+    return db_permission
+def get_subscription_by_id(db: Session, subscription_id: int):
+    db_subscription = db.query(Subscription).filter(Subscription.id == subscription_id).first()
+    if not db_subscription:
+        raise HTTPException(status_code=404, detail="Subscription not found")
+    return db_subscription
+def get_usage_by_id(db: Session, usage_id: int):
+    db_usage = db.query(Usage).filter(Usage.id == usage_id).first()
+    if not db_usage:
+        raise HTTPException(status_code=404, detail="Usage not found")
+    return db_usage
+def get_plan_by_name(db: Session, plan_name: str):
+    db_plan = db.query(Plan).filter(Plan.name == plan_name).first()
+    if not db_plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+    return db_plan
+def get_permission_by_name(db: Session, permission_name: str):
+    db_permission = db.query(Permission).filter(Permission.name == permission_name).first()
+    if not db_permission:
+        raise HTTPException(status_code=404, detail="Permission not found")
+    return db_permission
+def get_subscription_by_user_id(db: Session, user_id: int):
+    db_subscription = db.query(Subscription).filter(Subscription.user_id == user_id).first()
+    if not db_subscription:
+        raise HTTPException(status_code=404, detail="Subscription not found")
+    return db_subscription
+def get_usage_by_user_id(db: Session, user_id: int):
+    db_usage = db.query(Usage).filter(Usage.user_id == user_id).all()
+    if not db_usage:
+        raise HTTPException(status_code=404, detail="Usage not found")
+    return db_usage
+def get_usage_by_api_name(db: Session, api_name: str):
+    db_usage = db.query(Usage).filter(Usage.api_name == api_name).all()
+    if not db_usage:
+        raise HTTPException(status_code=404, detail="Usage not found")
+    return db_usage
+def get_usage_by_api_name_and_user_id(db: Session, api_name: str, user_id: int):
+    db_usage = db.query(Usage).filter(
+        Usage.api_name == api_name, Usage.user_id == user_id
+    ).first()
+    if not db_usage:
+        raise HTTPException(status_code=404, detail="Usage not found")
+    return db_usage
