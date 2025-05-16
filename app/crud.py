@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from .models import Plan, Permission, Subscription, Usage
 from .schemas import PlanCreate, PermissionCreate, SubscriptionCreate
 from fastapi import HTTPException
@@ -112,7 +113,15 @@ def check_limit(db: Session, user_id: int):
     return {"message": "Usage is within limits"}
 
 def get_all_plans(db: Session):
-    return db.query(Plan).all()
+    print('get all plans')
+    thsePlans = db.query(Plan).all()
+    print('thsePlans')
+    print(thsePlans)
+
+    raw = db.execute(text("SELECT * FROM plans")).fetchall()
+    print('raw')
+    print(raw)
+    return thsePlans
 def get_all_permissions(db: Session):
     return db.query(Permission).all()
 def get_all_subscriptions(db: Session):

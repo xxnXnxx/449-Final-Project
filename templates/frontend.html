@@ -139,7 +139,7 @@
 
     // Fetch all plans
     async function fetchPlans() {
-      // try {
+      try {
         const response = await fetch("http://127.0.0.1:8000/plans");
         const data = await response
         console.log('data', data);
@@ -150,10 +150,10 @@
           li.textContent = `${plan.name}: ${plan.description}`;
           plansList.appendChild(li);
         });
-      // } catch (err) {
-      //   document.getElementById("plans-list").textContent = "Error fetching plans.";
-      //   console.error(err);
-      // }
+      } catch (err) {
+        document.getElementById("plans-list").textContent = "Error fetching plans.";
+        console.error(err);
+      }
     }
   </script>
 </body>
