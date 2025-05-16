@@ -114,7 +114,7 @@
       // Get selected usage limits
       const usageLimitsSelect = document.getElementById("plan-usage-limits");
       const usageLimits = JSON.parse(usageLimitsSelect.value);
-
+      
       try {
         const response = await fetch("http://127.0.0.1:8000/plans", {
           method: "POST",
@@ -125,10 +125,11 @@
             name,
             description,
             permissions,
-            usage_limits: usageLimits,
+            limits: usageLimits,
           }),
         });
         const data = await response.json();
+        console.log('data', data);
         document.getElementById("plan-response").textContent = "Plan created successfully!";
       } catch (err) {
         document.getElementById("plan-response").textContent = "Error creating plan.";
@@ -138,9 +139,10 @@
 
     // Fetch all plans
     async function fetchPlans() {
-      try {
+      // try {
         const response = await fetch("http://127.0.0.1:8000/plans");
-        const data = await response.json();
+        const data = await response
+        console.log('data', data);
         const plansList = document.getElementById("plans-list");
         plansList.innerHTML = "";
         data.forEach((plan) => {
@@ -148,10 +150,10 @@
           li.textContent = `${plan.name}: ${plan.description}`;
           plansList.appendChild(li);
         });
-      } catch (err) {
-        document.getElementById("plans-list").textContent = "Error fetching plans.";
-        console.error(err);
-      }
+      // } catch (err) {
+      //   document.getElementById("plans-list").textContent = "Error fetching plans.";
+      //   console.error(err);
+      // }
     }
   </script>
 </body>
